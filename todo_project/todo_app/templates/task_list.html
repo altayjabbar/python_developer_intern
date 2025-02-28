@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="az">
+
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Task</h1>
+        <ul class="task-list">
+            {% for task in tasks %}
+            <li class="{% if task.completed %}completed{% endif %}">
+                {{ task.description }}
+                <div class="task-buttons">
+
+                    <form method="POST" action="{% url 'complete_task' task.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="complete">✅ Complete</button>
+                    </form>
+
+
+                    <form method="POST" action="{% url 'delete_task' task.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="delete">❌ Delete</button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'add_task' %}">
+            <button>Add New Task</button>
+        </a>
+    </div>
+</body>
+
+</html>
